@@ -1,0 +1,7 @@
+<IfModule mod_dir.c>
+    DirectoryIndex index.html index.php
+</IfModule>
+
+<IfModule mod_php.c>
+    php_flag short_open_tag on
+</IfModule>

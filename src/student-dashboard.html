@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-brand">
+            <img src="logo.png" alt="Logo" class="logo">
+            <h1>Professore Presente</h1>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <div class="main-wrapper">
+        
+        <aside class="sidebar">
+            <h3>Welcome, <span id="studentName">Student</span></h3>
+            <hr>
+            <nav>
+                <a href="#" onclick="loadPage('courses')">My Courses</a>
+                <a href="#" onclick="loadPage('queue')">Join Queue</a>
+                <a href="#" onclick="loadPage('profile')">Profile</a>
+            </nav>
+        </aside>
+
+        <main>
+            <div id="content-area">
+                <p>Select an option from the sidebar</p>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

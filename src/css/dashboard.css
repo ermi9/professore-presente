@@ -1,0 +1,75 @@
+/* Reset everything */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* HEADER */
+header {
+    background-color: #006EC6;
+    color: white;
+    
+    /* Make it a flex container to position logo group and button */
+    display: flex;
+    justify-content: space-between;  /* Logo on left, button on right */
+    align-items: center;             /* Vertically center everything */
+    
+    /* Padding: 15px top/bottom, 15px left/right */
+    padding: 15px;
+    
+    /* Add subtle shadow */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Left side: Logo + Title group */
+.header-brand {
+    display: flex;                   /* Put logo and h1 side by side */
+    align-items: center;             /* Vertically align them */
+    gap: 15px;                       /* 15px space between logo and title */
+}
+
+/* Logo image */
+.logo {
+    height: 180px;                    /* Set height, width auto-adjusts */
+    width: auto;
+    margin: 0;                       /* Remove default image margin */
+    margin-left: -35px;                /* Shift logo left to align with header padding */
+}
+
+/* Title */
+h1 {
+    font-size: 24px;
+    margin: 0;                       /* Remove default h1 margin */
+}
+
+/* Logout button 
+.logout-btn {
+    background: white;
+    color: #006EC6;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+*/
+.logout-btn:hover {
+    background-color: #f0f0f0;
+}
+.main-wrapper{
+    display: flex;
+
+}
+.sidebar {
+    width:25%;
+    padding:20px;
+    background-color: #fff;
+
+}
