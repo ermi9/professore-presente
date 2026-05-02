@@ -1,146 +1,191 @@
-# Professore Presente - Exam Queue Management System
+# 🎓 Professore Presente
 
-A web application for managing exam queues. Professors upload a file with eligible students, students join the queue, and professors mark attendance.
-
-## Tech Stack
-- **Backend:** PHP 8.2 + Apache
-- **Database:** PostgreSQL 15
-- **Frontend:** HTML/CSS/Bootstrap + Vanilla JavaScript
-- **Authentication:** JWT (JSON Web Tokens)
-- **Authorization:** Role-Based Access Control (RBAC)
+A secure, full-stack web application for managing university exam queues, built with a strong focus on System Security and RESTful Web Programming principles.
 
 ---
 
-## Setup Instructions
+## 🚀 Overview
 
-### 1. Clone/Setup the Project
-```bash
-cd /path/to/professore_presente
-```
+Professore Presente is designed to optimize the interaction between students and professors during exam sessions.
 
-### 2. Start Docker Containers
-```bash
-docker-compose up -d
-```
+It allows:
+- Students to enroll and join exam queues
+- Professors to manage queues in real time
+- Admins to control system entities
 
-This will:
-- Start PostgreSQL service (`db`) on port 5432
-- Start PHP/Apache service (`php`) on port 80
-- Both will be ready automatically (health checks configured)
-
-### 3. Initialize the Database
-Wait a few seconds for PostgreSQL to be ready, then:
-
-```bash
-docker exec professore_presente_db psql -U professor -d professore_presente -f /dev/stdin < src/config/schema.sql
-```
-
-Or manually:
-```bash
-docker exec -it professore_presente_db psql -U professor -d professore_presente
-```
-Then paste the contents of `src/config/schema.sql`
-
-### 4. Test Database Connection
-```bash
-docker exec professore_presente_php php /var/www/html/test_db_connection.php
-```
-
-You should see:
-```
-✓ Database connection successful!
-Connected to: professore_presente
-```
-
-### 5. Access the App
-Open your browser and go to:
-```
-http://localhost
-```
+The system is built as a decoupled RESTful architecture with strong security-by-design principles.
 
 ---
 
-## Project Structure
-```
+## 🏗️ Architecture
+
+### Backend
+- PHP 8.2 (RESTful API)
+- Apache Server
+- PDO for database interaction
+- Custom security layer (JWTHandler, RBAC)
+
+### Frontend
+- HTML5 + CSS3
+- Vanilla JavaScript
+- Fetch API for async requests
+- LocalStorage for JWT persistence
+
+### Database
+- PostgreSQL
+- Fully normalized relational schema
+
+### Infrastructure
+- Docker + Docker Compose
+
+---
+
+## 📁 Project Structure
 src/
+├── api/
+│   ├── auth/
+│   ├── admin/
+│   ├── professor/
+│   ├── student/
 ├── config/
-│   ├── Database.php       # Database connection class
-│   └── schema.sql         # Database schema
-├── test_db_connection.php # Connection test
-└── index.php              # (to be created)
-```
+│   ├── Database.php
+│   ├── schema.sql
+├── security/
+│   ├── JWTHandler.php
+│   ├── RBAC.php
+├── js/
+│   ├── common.js
+│   ├── admin.js
+│   ├── student.js
+│   ├── professor.js
+├── views/
+Dockerfile
+docker-compose.yml
+README.md
 
 ---
 
-## Database Overview
+## ✨ Core Features
 
-### Tables:
-1. **users** - All users (admin, professor, student)
-2. **professors** - Links users to professor role
-3. **students** - Links users to student role
-4. **exams** - Exam sessions created by professors
-5. **exam_list** - Students eligible for each exam (from uploaded file)
-6. **queue** - Active queue for each exam
+### 👨‍🎓 Student
+- Register and login
+- Enroll in courses
+- Join exam queues
+- View queue status
 
-### Relationships:
-- users → professors/students (one-to-one)
-- professors → exams (one-to-many)
-- exams → exam_list (one-to-many)
-- exams → queue (one-to-many)
+### 👨‍🏫 Professor
+- Create exams
+- Manage queue (call next, mark attended)
+- Validate ownership of exams
 
----
-
-## Next Steps
-1. Build authentication (register, login, JWT)
-2. Implement RBAC middleware
-3. Create admin dashboard
-4. Build professor exam flow
-5. Build student queue flow
+### 👑 Admin
+- Manage professors and system entities
 
 ---
 
-## Useful Docker Commands
+## 🔐 Security Implementation
 
-**View logs:**
-```bash
-docker-compose logs php
-docker-compose logs db
-```
+### JWT Authentication
+- Stateless authentication
+- Token includes user_id, email, role, expiration
+- HMAC-SHA256 signature
 
-**Stop containers:**
-```bash
-docker-compose down
-```
+### Password Security
+- bcrypt hashing
+- automatic salting
 
-**Access PostgreSQL CLI:**
-```bash
-docker exec -it professore_presente_db psql -U professor -d professore_presente
-```
+### SQL Injection Prevention
+- PDO prepared statements
 
-**Restart:**
-```bash
-docker-compose restart
-```
+### RBAC
+- Centralized permission enforcement
+
+### Rate Limiting
+- Protects login endpoint from brute-force attacks
 
 ---
 
-## Development Notes
+## 🔄 System Workflow
 
-- PHP files go in `src/`
-- Apache serves from `/var/www/html` (mapped to `src/`)
-- PostgreSQL runs on port 5432 (accessible as `db` hostname from PHP container)
-- Connection details in `docker-compose.yml` (change if needed)
+### Authentication
+1. User logs in
+2. Password verified
+3. JWT generated
+4. Token stored in LocalStorage
+5. Sent in Authorization header
+
+### Queue System
+1. Student joins queue
+2. Backend validates request
+3. Stored in database
+4. Professor manages queue
+5. Updates applied
 
 ---
 
-## Security Notes
+## 🗄️ Database Design
 
-- All passwords are hashed with `password_hash()` + `PASSWORD_BCRYPT`
-- All SQL queries use prepared statements (PDO) to prevent SQL injection
-- JWT tokens validate request authorization
-- RBAC middleware enforces role-based access control
-- CSRF tokens on all forms
+Entities:
+- users
+- students
+- professors
+- courses
+- exams
+- queue_entries
+
+Includes foreign keys and cascading deletes.
 
 ---
 
-Created: 2025
+## ⚙️ Setup
+
+### Run with Dockerdocker-compose up --build
+
+Open:
+http://localhost
+
+---
+
+## ⚖️ Design Decisions
+
+- JWT → scalable authentication
+- Vanilla JS → DOM mastery
+- Docker → consistent environment
+
+---
+
+## 📉 Limitations
+
+- No real-time updates
+- Basic frontend UI
+- No modern framework
+
+---
+
+## 🚀 Future Improvements
+
+- WebSockets
+- React frontend
+- Notifications
+- Monitoring tools
+
+---
+
+## 📚 Academic Context
+
+Developed for:
+- Web Programming
+- System Security
+
+---
+
+## 👤 Author
+
+Ermiyas Alemu Dagne  
+Student ID: 559995  
+
+---
+
+## 📄 License
+
+Academic use only
