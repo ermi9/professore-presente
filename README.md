@@ -150,15 +150,6 @@ Developed for:
 - Web Programming
 - System Security
 
----
-
-## 👤 Author
-
-Ermiyas Alemu Dagne  
-Student ID: 559995  
-
----
-
 ## 📄 License
 
 Academic use only
