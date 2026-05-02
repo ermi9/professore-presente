@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professore Presente - Admin</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-brand">
+            <img src="logo.png" alt="UniMe Logo" class="logo">
+            <h1>Professore Presente</h1>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <div class="main-wrapper">
+
+        <aside class="sidebar">
+            <h3>Welcome, <span id="adminName">Admin</span></h3>
+            <hr>
+            <nav>
+                <a href="#" onclick="loadPage('professors')">Professors</a>
+                <a href="#" onclick="loadPage('profile')">Profile</a>
+            </nav>
+        </aside>
+
+        <main>
+
+            <!-- ── PROFESSORS SECTION ── -->
+            <div id="section-professors">
+                <h2 class="page-title">Professors</h2>
+
+                <div class="card">
+                    <h3>Create New Professor Account</h3>
+                    <div class="form-group">
+                        <label for="profUsername">Username</label>
+                        <input type="text" id="profUsername" placeholder="e.g. prof_rossi">
+                    </div>
+                    <div class="form-group">
+                        <label for="profEmail">Email</label>
+                        <input type="email" id="profEmail" placeholder="professor@university.it">
+                    </div>
+                    <div class="form-group">
+                        <label for="profPassword">Password</label>
+                        <input type="password" id="profPassword" placeholder="At least 6 characters">
+                    </div>
+                    <div class="form-group">
+                        <label for="profDept">Department (optional)</label>
+                        <input type="text" id="profDept" placeholder="e.g. Computer Science">
+                    </div>
+                    <button class="btn btn-primary" onclick="createProfessor()">Create Professor</button>
+                    <div id="profMsg"></div>
+                </div>
+
+                <div class="card">
+                    <h3>All Professors</h3>
+                    <div id="professorsList"><p style="color:#666;">Loading...</p></div>
+                </div>
+            </div>
+
+            <!-- ── PROFILE SECTION ── -->
+            <div id="section-profile" style="display:none;">
+                <h2 class="page-title">My Profile</h2>
+                <div class="card">
+                    <table>
+                        <tr><th style="width:120px;">Username</th><td id="profileUsername">-</td></tr>
+                        <tr><th>Email</th><td id="profileEmail">-</td></tr>
+                        <tr><th>Role</th><td id="profileRole">-</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

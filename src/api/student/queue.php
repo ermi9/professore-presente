@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/cors.php';
+require_once __DIR__ . '/../../cors.php';
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../../security/JWTHandler.php';
 require_once __DIR__ . '/../../security/RBAC.php';
@@ -157,16 +157,13 @@ function joinQueue($conn, $student_id) {
 }
 
 function viewQueuePosition($conn, $student_id) {
-    $data = json_decode(file_get_contents('php://input'), true);
+    $exam_id = isset($_GET['exam_id']) ? (int)$_GET['exam_id'] : 0;
 
-    // Validate input
-    if (!isset($data['exam_id'])) {
+    if (!$exam_id) {
         http_response_code(400);
         echo json_encode(['error' => 'Missing required field: exam_id']);
         exit;
     }
-
-    $exam_id = (int)$data['exam_id'];
 
     try {
         // Get student's queue entry

@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Student Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professore Presente - Student</title>
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
     <header>
         <div class="header-brand">
-            <img src="logo.png" alt="Logo" class="logo">
+            <img src="logo.png" alt="UniMe Logo" class="logo">
             <h1>Professore Presente</h1>
         </div>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
 
     <div class="main-wrapper">
-        
+
         <aside class="sidebar">
             <h3>Welcome, <span id="studentName">Student</span></h3>
             <hr>
@@ -27,13 +29,61 @@
         </aside>
 
         <main>
-            <div id="content-area">
-                <p>Select an option from the sidebar</p>
-            </div>
-        </main>
 
+            <!-- ── COURSES SECTION ── -->
+            <div id="section-courses">
+                <h2 class="page-title">My Courses</h2>
+
+                <div class="card">
+                    <h3>Enroll in a Course</h3>
+                    <p style="color:#666;font-size:13px;margin-bottom:12px;">Ask your professor for the Course Code.</p>
+                    <div class="form-group">
+                        <label for="enrollId">Course Code</label>
+                        <input type="text" id="enrollId" placeholder="e.g. ALG101">
+                    </div>
+                    <button class="btn btn-primary" onclick="enrollCourse()">Enroll</button>
+                    <div id="enrollMsg"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Enrolled Courses</h3>
+                    <div id="coursesList"><p style="color:#666;">Loading...</p></div>
+                </div>
+            </div>
+
+            <!-- ── QUEUE SECTION ── -->
+            <div id="section-queue" style="display:none;">
+                <h2 class="page-title">Exam Queue</h2>
+
+                <div class="card">
+                    <h3>Enter Exam ID</h3>
+                    <p style="color:#666;font-size:13px;margin-bottom:12px;">You must be on the exam roster to join. Ask your professor for the Exam ID.</p>
+                    <div class="form-group">
+                        <label for="queueExamId">Exam ID</label>
+                        <input type="text" id="queueExamId" placeholder="e.g. 5">
+                    </div>
+                    <button class="btn btn-primary" onclick="joinQueue()">Join Queue</button>
+                    <button class="btn btn-primary" onclick="checkQueueStatus()" style="margin-left:8px;background-color:#0b3764;">Check My Status</button>
+                    <div id="queueMsg"></div>
+                </div>
+            </div>
+
+            <!-- ── PROFILE SECTION ── -->
+            <div id="section-profile" style="display:none;">
+                <h2 class="page-title">My Profile</h2>
+                <div class="card">
+                    <table>
+                        <tr><th style="width:120px;">Username</th><td id="profileUsername">-</td></tr>
+                        <tr><th>Email</th><td id="profileEmail">-</td></tr>
+                        <tr><th>Role</th><td id="profileRole">-</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </main>
     </div>
 
+    <script src="js/common.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 </html>

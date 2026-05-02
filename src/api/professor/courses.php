@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/cors.php';
+require_once __DIR__ . '/../../cors.php';
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../../security/JWTHandler.php';
 require_once __DIR__ . '/../../security/RBAC.php';
@@ -101,6 +101,18 @@ function createCourse($conn, $professor_id) {
     }
 
     try {
+        // Check for duplicate course code for this professor
+        $check_stmt = $conn->prepare("
+            SELECT id FROM courses WHERE professor_id = :professor_id AND LOWER(code) = LOWER(:code)
+        ");
+        $check_stmt->execute([':professor_id' => $professor_id, ':code' => $code]);
+
+        if ($check_stmt->rowCount() > 0) {
+            http_response_code(409);
+            echo json_encode(['error' => 'You already have a course with the code "' . $code . '"']);
+            exit;
+        }
+
         // Create course
         $stmt = $conn->prepare("
             INSERT INTO courses (professor_id, name, code, description)

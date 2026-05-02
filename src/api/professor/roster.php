@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/cors.php';
+require_once __DIR__ . '/../../cors.php';
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../../security/JWTHandler.php';
 require_once __DIR__ . '/../../security/RBAC.php';

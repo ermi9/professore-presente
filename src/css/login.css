@@ -6,14 +6,14 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0b3764 0%, #1a5a8f 100%);
+    background-color: #f0f4f8;
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 header {
-    background-color: #0b3764;
+    background-color: #006ec0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -108,4 +108,34 @@ header h1 {
 
 .auth-link a:hover {
     text-decoration: underline;
+}
+
+/* Alert messages (used on signup page) */
+.alert {
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Select dropdown - match input styling */
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
 }

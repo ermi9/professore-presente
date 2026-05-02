@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/cors.php';
+require_once __DIR__ . '/../../cors.php';
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../../security/JWTHandler.php';
 require_once __DIR__ . '/../../security/RBAC.php';
@@ -77,17 +77,27 @@ function createExam($conn, $professor_id) {
     $data = json_decode(file_get_contents('php://input'), true);
 
     // Validate input
-    if (!isset($data['course_id']) || !isset($data['exam_date']) || !isset($data['exam_time'])) {
+    if (!isset($data['course_code']) || !isset($data['exam_date']) || !isset($data['exam_time'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing required fields: course_id, exam_date, exam_time']);
+        echo json_encode(['error' => 'Missing required fields: course_code, exam_date, exam_time']);
         exit;
     }
 
-    $course_id = (int)$data['course_id'];
-    $exam_date = $data['exam_date']; // YYYY-MM-DD
-    $exam_time = $data['exam_time']; // HH:MM:SS
-    $room_id = isset($data['room_id']) ? (int)$data['room_id'] : null;
+    $course_code = trim($data['course_code']);
+    $exam_date   = $data['exam_date']; // YYYY-MM-DD
+    $exam_time   = $data['exam_time']; // HH:MM:SS
     $description = isset($data['description']) ? trim($data['description']) : null;
+
+    // Validate and cast room_id only if provided
+    $room_id = null;
+    if (isset($data['room_id']) && $data['room_id'] !== '' && $data['room_id'] !== null) {
+        if (!ctype_digit((string)$data['room_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'room_id must be a positive integer']);
+            exit;
+        }
+        $room_id = (int)$data['room_id'];
+    }
 
     // Validate date format
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $exam_date)) {
@@ -104,15 +114,20 @@ function createExam($conn, $professor_id) {
     }
 
     try {
-        // Verify course belongs to this professor
-        $verify_stmt = $conn->prepare("SELECT id FROM courses WHERE id = :course_id AND professor_id = :professor_id");
-        $verify_stmt->execute([':course_id' => $course_id, ':professor_id' => $professor_id]);
+        // Look up the course by code and make sure it belongs to this professor
+        $verify_stmt = $conn->prepare("
+            SELECT id FROM courses
+            WHERE LOWER(code) = LOWER(:course_code) AND professor_id = :professor_id
+        ");
+        $verify_stmt->execute([':course_code' => $course_code, ':professor_id' => $professor_id]);
 
         if ($verify_stmt->rowCount() === 0) {
-            http_response_code(403);
-            echo json_encode(['error' => 'Course does not belong to you']);
+            http_response_code(404);
+            echo json_encode(['error' => 'No course with code "' . $course_code . '" found in your courses']);
             exit;
         }
+
+        $course_id = (int)$verify_stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
         // Create exam
         $stmt = $conn->prepare("

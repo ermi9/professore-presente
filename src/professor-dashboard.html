@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professore Presente - Professor</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-brand">
+            <img src="logo.png" alt="UniMe Logo" class="logo">
+            <h1>Professore Presente</h1>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <div class="main-wrapper">
+
+        <aside class="sidebar">
+            <h3>Welcome, <span id="profName">Professor</span></h3>
+            <hr>
+            <nav>
+                <a href="#" onclick="loadPage('courses')">My Courses</a>
+                <a href="#" onclick="loadPage('exams')">My Exams</a>
+                <a href="#" onclick="loadPage('roster')">Upload Roster</a>
+                <a href="#" onclick="loadPage('queue')">Manage Queue</a>
+                <a href="#" onclick="loadPage('profile')">Profile</a>
+            </nav>
+        </aside>
+
+        <main>
+
+            <!-- ── COURSES SECTION ── -->
+            <div id="section-courses">
+                <h2 class="page-title">My Courses</h2>
+
+                <div class="card">
+                    <h3>Create New Course</h3>
+                    <div class="form-group">
+                        <label for="courseName">Course Name</label>
+                        <input type="text" id="courseName" placeholder="e.g. Mathematics 101">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseCode">Course Code</label>
+                        <input type="text" id="courseCode" placeholder="e.g. MATH101">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseDesc">Description (optional)</label>
+                        <input type="text" id="courseDesc" placeholder="Short description">
+                    </div>
+                    <button class="btn btn-primary" onclick="createCourse()">Create Course</button>
+                    <div id="courseMsg"></div>
+                </div>
+
+                <div class="card">
+                    <h3>My Courses</h3>
+                    <div id="coursesList"><p style="color:#666;">Loading...</p></div>
+                </div>
+            </div>
+
+            <!-- ── EXAMS SECTION ── -->
+            <div id="section-exams" style="display:none;">
+                <h2 class="page-title">My Exams</h2>
+
+                <div class="card">
+                    <h3>Create New Exam</h3>
+                    <div class="form-group">
+                        <label for="examCourseCode">Course Code</label>
+                        <input type="text" id="examCourseCode" placeholder="e.g. A000875">
+                    </div>
+                    <div class="form-group">
+                        <label for="examDate">Exam Date</label>
+                        <input type="date" id="examDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="examTime">Exam Time</label>
+                        <input type="time" id="examTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="examRoomId">Room ID (optional)</label>
+                        <input type="text" id="examRoomId" placeholder="Leave blank if not assigned">
+                    </div>
+                    <div class="form-group">
+                        <label for="examDesc">Description (optional)</label>
+                        <input type="text" id="examDesc" placeholder="Any notes about this exam">
+                    </div>
+                    <button class="btn btn-primary" onclick="createExam()">Create Exam</button>
+                    <div id="examMsg"></div>
+                </div>
+
+                <div class="card">
+                    <h3>My Exams</h3>
+                    <div id="examsList"><p style="color:#666;">Loading...</p></div>
+                </div>
+            </div>
+
+            <!-- ── ROSTER SECTION ── -->
+            <div id="section-roster" style="display:none;">
+                <h2 class="page-title">Upload Student Roster</h2>
+
+                <div class="card">
+                    <h3>Upload CSV File</h3>
+                    <p style="color:#666;font-size:13px;margin-bottom:15px;">
+                        The CSV should have one student per row with their email, username, or student ID number.
+                        The first row (header) is skipped automatically.
+                    </p>
+                    <div class="form-group">
+                        <label for="rosterExamId">Exam ID</label>
+                        <input type="text" id="rosterExamId" placeholder="e.g. 5">
+                    </div>
+                    <div class="form-group">
+                        <label for="rosterFile">CSV File</label>
+                        <input type="file" id="rosterFile" accept=".csv">
+                    </div>
+                    <button class="btn btn-primary" onclick="uploadRoster()">Upload Roster</button>
+                    <div id="rosterMsg"></div>
+                </div>
+            </div>
+
+            <!-- ── QUEUE SECTION ── -->
+            <div id="section-queue" style="display:none;">
+                <h2 class="page-title">Manage Queue</h2>
+
+                <div class="card">
+                    <h3>Load Queue for an Exam</h3>
+                    <div class="form-group">
+                        <label for="manageExamId">Exam ID</label>
+                        <input type="text" id="manageExamId" placeholder="e.g. 5">
+                    </div>
+                    <button class="btn btn-primary" onclick="loadQueueList()">Load Queue</button>
+                </div>
+
+                <!-- Queue table is populated here by JS -->
+                <div id="queueListArea"></div>
+            </div>
+
+            <!-- ── PROFILE SECTION ── -->
+            <div id="section-profile" style="display:none;">
+                <h2 class="page-title">My Profile</h2>
+                <div class="card">
+                    <table>
+                        <tr><th style="width:120px;">Username</th><td id="profileUsername">-</td></tr>
+                        <tr><th>Email</th><td id="profileEmail">-</td></tr>
+                        <tr><th>Role</th><td id="profileRole">-</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/professor.js"></script>
+</body>
+</html>

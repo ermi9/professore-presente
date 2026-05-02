@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/cors.php';
+require_once __DIR__ . '/../../cors.php';
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../../security/JWTHandler.php';
 require_once __DIR__ . '/../../security/RBAC.php';
@@ -83,24 +83,26 @@ function enrollInCourse($conn, $student_id) {
     $data = json_decode(file_get_contents('php://input'), true);
 
     // Validate input
-    if (!isset($data['course_id'])) {
+    if (empty($data['course_code'])) {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing required field: course_id']);
+        echo json_encode(['error' => 'Missing required field: course_code']);
         exit;
     }
 
-    $course_id = (int)$data['course_id'];
+    $course_code = trim($data['course_code']);
 
     try {
-        // Verify course exists
-        $verify_stmt = $conn->prepare("SELECT id FROM courses WHERE id = :course_id");
-        $verify_stmt->execute([':course_id' => $course_id]);
+        // Look up course by code (case-insensitive)
+        $verify_stmt = $conn->prepare("SELECT id FROM courses WHERE LOWER(code) = LOWER(:course_code)");
+        $verify_stmt->execute([':course_code' => $course_code]);
 
         if ($verify_stmt->rowCount() === 0) {
             http_response_code(404);
-            echo json_encode(['error' => 'Course not found']);
+            echo json_encode(['error' => 'No course found with code "' . $course_code . '"']);
             exit;
         }
+
+        $course_id = (int)$verify_stmt->fetch(PDO::FETCH_ASSOC)['id'];
 
         // Check if already enrolled
         $check_stmt = $conn->prepare("
