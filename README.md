@@ -38,33 +38,6 @@ The system is built as a decoupled RESTful architecture with strong security-by-
 ### Infrastructure
 - Docker + Docker Compose
 
----
-
-## 📁 Project Structure
-``src/
-├── api/
-│   ├── auth/
-│   ├── admin/
-│   ├── professor/
-│   ├── student/
-├── config/
-│   ├── Database.php
-│   ├── schema.sql
-├── security/
-│   ├── JWTHandler.php
-│   ├── RBAC.php
-├── js/
-│   ├── common.js
-│   ├── admin.js
-│   ├── student.js
-│   ├── professor.js
-├── views/
-Dockerfile
-docker-compose.yml``
-README.md
-
----
-
 ## ✨ Core Features
 
 ### 👨‍🎓 Student
