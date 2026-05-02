@@ -41,7 +41,7 @@ The system is built as a decoupled RESTful architecture with strong security-by-
 ---
 
 ## 📁 Project Structure
-src/
+``src/
 ├── api/
 │   ├── auth/
 │   ├── admin/
@@ -60,7 +60,7 @@ src/
 │   ├── professor.js
 ├── views/
 Dockerfile
-docker-compose.yml
+docker-compose.yml``
 README.md
 
 ---
