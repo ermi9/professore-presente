@@ -127,12 +127,9 @@ function joinQueue($conn, $student_id) {
         $check_stmt->execute([':exam_id' => $exam_id, ':student_id' => $student_id]);
 
         if ($check_stmt->rowCount() > 0) {
-            $queue_entry = $check_stmt->fetch(PDO::FETCH_ASSOC);
-            if ($queue_entry['status'] !== 'attended') {
-                http_response_code(409);
-                echo json_encode(['error' => 'Already in queue for this exam']);
-                exit;
-            }
+            http_response_code(409);
+            echo json_encode(['error' => 'You are already in the queue for this exam']);
+            exit;
         }
 
         // Add to queue
