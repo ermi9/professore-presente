@@ -1,10 +1,5 @@
-// professor.js - Professor Dashboard
-// Requires common.js ....loaded before this file in the HTML
-
 var token = localStorage.getItem('token');
 if (!token) window.location.href = 'index.html';
-
-//Navigation
 
 var sections = ['courses', 'exams', 'roster', 'queue', 'profile'];
 
@@ -22,16 +17,12 @@ function loadPage(page) {
     if (page === 'profile') loadProfile();
 }
 
-//Init
-
 function init() {
     apiRequest('/api/auth/profile.php').then(function (data) {
         if (data.user) document.getElementById('profName').textContent = data.user.username;
     });
     loadPage('courses');
 }
-
-//COURSES
 
 function loadCoursesList() {
     var list = document.getElementById('coursesList');
@@ -87,8 +78,6 @@ function createCourse() {
         msgDiv.innerHTML = alertBox('Network error.', 'danger');
     });
 }
-
-// EXAMS
 
 function loadExamsList() {
     var list = document.getElementById('examsList');
@@ -159,8 +148,6 @@ function createExam() {
     });
 }
 
-//ROSTER 
-
 function uploadRoster() {
     var examId    = document.getElementById('rosterExamId').value;
     var fileInput = document.getElementById('rosterFile');
@@ -197,8 +184,6 @@ function uploadRoster() {
         msgDiv.innerHTML = alertBox('Network error during upload.', 'danger');
     });
 }
-
-// queue
 
 function loadQueueList() {
     var examId = parseInt(document.getElementById('manageExamId').value);
@@ -271,8 +256,6 @@ function markAttended(examId, studentId) {
         }
     });
 }
-
-// profile
 
 function loadProfile() {
     apiRequest('/api/auth/profile.php').then(function (data) {

@@ -1,10 +1,5 @@
-// admin.js - Admin Dashboard
-// Requires: common.js (loaded before this file in the HTML)
-
 var token = localStorage.getItem('token');
 if (!token) window.location.href = 'index.html';
-
-// ── Navigation ────────────────────────────────────────────
 
 var sections = ['professors', 'profile'];
 
@@ -21,16 +16,12 @@ function loadPage(page) {
     if (page === 'profile')    loadProfile();
 }
 
-//Init
-
 function init() {
     apiRequest('/api/auth/profile.php').then(function (data) {
         if (data.user) document.getElementById('adminName').textContent = data.user.username;
     });
     loadPage('professors');
 }
-
-//PROFESSORS
 
 function loadProfessorsList() {
     var list = document.getElementById('professorsList');
@@ -93,8 +84,6 @@ function createProfessor() {
     });
 }
 
-//PROFILE
-
 function loadProfile() {
     apiRequest('/api/auth/profile.php').then(function (data) {
         if (data.user) {
@@ -105,5 +94,4 @@ function loadProfile() {
     });
 }
 
-//Start
 init();

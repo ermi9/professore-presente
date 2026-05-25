@@ -1,9 +1,5 @@
-// dashboard.js - Student Dashboard
-
 var token = localStorage.getItem('token');
 if (!token) window.location.href = 'index.html';
-
-//Helpers
 
 function apiRequest(url, method, body) {
     var options = {
@@ -27,7 +23,6 @@ function logout() {
     window.location.href = 'index.html';
 }
 
-//Navigation
 var sections = ['courses', 'queue', 'profile'];
 
 function showSection(name) {
@@ -44,16 +39,12 @@ function loadPage(page) {
     if (page === 'profile') loadProfile();
 }
 
-//Init ─
-
 function init() {
     apiRequest('/api/auth/profile.php').then(function (data) {
         if (data.user) document.getElementById('studentName').textContent = data.user.username;
     });
     loadPage('courses');
 }
-
-//COURSES
 
 function loadCoursesList() {
     var list = document.getElementById('coursesList');
@@ -105,8 +96,7 @@ function enrollCourse() {
     });
 }
 
-//QUEUE
-
+// polling state for the live queue card
 var queuePoller = null;
 var activeQueueExamId = null;
 
@@ -192,8 +182,6 @@ function stopQueuePolling() {
     if (body) body.innerHTML = '';
 }
 
-//PROFILE
-
 function loadProfile() {
     apiRequest('/api/auth/profile.php').then(function (data) {
         if (data.user) {
@@ -204,5 +192,4 @@ function loadProfile() {
     });
 }
 
-//Start 
 init();
