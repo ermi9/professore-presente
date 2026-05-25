@@ -38,6 +38,7 @@ function showSection(name) {
 }
 
 function loadPage(page) {
+    if (page !== 'queue') stopQueuePolling();
     showSection(page);
     if (page === 'courses') loadCoursesList();
     if (page === 'profile') loadProfile();
@@ -104,7 +105,10 @@ function enrollCourse() {
     });
 }
 
-//QUEUE 
+//QUEUE
+
+var queuePoller = null;
+var activeQueueExamId = null;
 
 function joinQueue() {
     var examId = parseInt(document.getElementById('queueExamId').value);
@@ -117,7 +121,8 @@ function joinQueue() {
 
     apiRequest('/api/student/queue.php', 'POST', { exam_id: examId }).then(function (data) {
         if (data.status === 'waiting') {
-            msgDiv.innerHTML = alertBox('You joined the queue! Status: <strong>waiting</strong>', 'success');
+            msgDiv.innerHTML = '';
+            startQueuePolling(examId);
         } else {
             msgDiv.innerHTML = alertBox(data.error || data.message || 'Could not join the queue.', 'danger');
         }
@@ -126,28 +131,58 @@ function joinQueue() {
     });
 }
 
-function checkQueueStatus() {
-    var examId = parseInt(document.getElementById('queueExamId').value);
-    var msgDiv = document.getElementById('queueMsg');
+function startQueuePolling(examId) {
+    stopQueuePolling();
+    activeQueueExamId = examId;
+    document.getElementById('queueStatusCard').style.display = 'block';
+    pollQueueStatus();
+    queuePoller = setInterval(pollQueueStatus, 5000);
+}
 
-    if (!examId) {
-        msgDiv.innerHTML = alertBox('Please enter an Exam ID.', 'danger');
-        return;
-    }
+function pollQueueStatus() {
+    if (!activeQueueExamId) return;
+    apiRequest('/api/student/queue.php?exam_id=' + activeQueueExamId).then(function (data) {
+        var body = document.getElementById('queueStatusBody');
+        var pulse = document.getElementById('queuePulse');
 
-    apiRequest('/api/student/queue.php', 'GET', { exam_id: examId }).then(function (data) {
         if (data.position !== undefined) {
-            msgDiv.innerHTML = alertBox(
-                'Status: <strong>' + data.status + '</strong> &nbsp;|&nbsp; '
-                + 'Position: <strong>' + data.position + '</strong> of ' + data.total_waiting + ' waiting',
-                'info'
-            );
+            if (data.status === 'called') {
+                stopQueuePolling();
+                body.innerHTML = '<div style="text-align:center;padding:16px 0;">'
+                    + '<p style="font-size:22px;font-weight:bold;color:#1a5276;">It\'s your turn!</p>'
+                    + '<p style="color:#555;">Head to the exam room now.</p>'
+                    + '</div>';
+                pulse.textContent = '';
+            } else if (data.status === 'attended') {
+                stopQueuePolling();
+                body.innerHTML = alertBox('You have been marked as attended. Good luck!', 'success');
+                pulse.textContent = '';
+            } else {
+                body.innerHTML = '<table style="width:100%;">'
+                    + '<tr><th style="width:140px;">Status</th><td><strong>' + data.status + '</strong></td></tr>'
+                    + '<tr><th>Your position</th><td><strong>' + data.position + '</strong> of ' + data.total_waiting + ' waiting</td></tr>'
+                    + '</table>';
+                pulse.textContent = '● updating...';
+            }
         } else {
-            msgDiv.innerHTML = alertBox(data.error || data.message || 'You are not in this queue.', 'danger');
+            body.innerHTML = alertBox(data.error || 'You are not in this queue.', 'danger');
+            stopQueuePolling();
         }
     }).catch(function () {
-        msgDiv.innerHTML = alertBox('Network error.', 'danger');
+        document.getElementById('queuePulse').textContent = '● offline';
     });
+}
+
+function stopQueuePolling() {
+    if (queuePoller) {
+        clearInterval(queuePoller);
+        queuePoller = null;
+    }
+    activeQueueExamId = null;
+    var card = document.getElementById('queueStatusCard');
+    if (card) card.style.display = 'none';
+    var body = document.getElementById('queueStatusBody');
+    if (body) body.innerHTML = '';
 }
 
 //PROFILE
