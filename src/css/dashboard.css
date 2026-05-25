@@ -194,6 +194,15 @@ main {
     background-color: #218838;
 }
 
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
 .btn-sm {
     padding: 4px 10px;
     font-size: 12px;
@@ -281,4 +290,9 @@ table tr:hover {
 .badge-absent {
     background-color: #f8d7da;
     color: #721c24;
+}
+
+.badge-called {
+    background-color: #cce5ff;
+    color: #004085;
 }

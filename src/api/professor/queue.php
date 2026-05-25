@@ -63,13 +63,68 @@ $professor_id = $professor['id'];
 
 if ($request_method === 'PATCH') {
     markAttended($conn, $professor_id);
-} 
+}
+elseif ($request_method === 'PUT') {
+    callStudent($conn, $professor_id);
+}
 elseif ($request_method === 'GET') {
     viewQueue($conn, $professor_id);
 }
 else {
     http_response_code(405);
     echo json_encode(['error' => 'Method not allowed']);
+}
+
+function callStudent($conn, $professor_id) {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (!isset($data['exam_id']) || !isset($data['student_id'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Missing required fields: exam_id, student_id']);
+        exit;
+    }
+
+    $exam_id    = (int)$data['exam_id'];
+    $student_id = (int)$data['student_id'];
+
+    try {
+        $verify_stmt = $conn->prepare("
+            SELECT e.id FROM exams e
+            JOIN courses c ON e.course_id = c.id
+            WHERE e.id = :exam_id AND c.professor_id = :professor_id
+        ");
+        $verify_stmt->execute([':exam_id' => $exam_id, ':professor_id' => $professor_id]);
+
+        if ($verify_stmt->rowCount() === 0) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Exam does not belong to you']);
+            exit;
+        }
+
+        $update_stmt = $conn->prepare("
+            UPDATE queue SET status = 'called'
+            WHERE exam_id = :exam_id AND student_id = :student_id AND status = 'waiting'
+        ");
+        $update_stmt->execute([':exam_id' => $exam_id, ':student_id' => $student_id]);
+
+        if ($update_stmt->rowCount() === 0) {
+            http_response_code(409);
+            echo json_encode(['error' => 'Student is not in waiting status']);
+            exit;
+        }
+
+        http_response_code(200);
+        echo json_encode([
+            'message'    => 'Student called',
+            'exam_id'    => $exam_id,
+            'student_id' => $student_id,
+            'status'     => 'called'
+        ]);
+
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Failed to call student: ' . $e->getMessage()]);
+    }
 }
 
 function markAttended($conn, $professor_id) {

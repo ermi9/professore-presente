@@ -219,8 +219,13 @@ function loadQueueList() {
 
         var rows = '';
         data.queue.forEach(function (s) {
-            var badgeClass = s.status === 'attended' ? 'badge-attended' : s.status === 'absent' ? 'badge-absent' : 'badge-waiting';
+            var badgeClass = s.status === 'attended' ? 'badge-attended'
+                : s.status === 'absent'   ? 'badge-absent'
+                : s.status === 'called'   ? 'badge-called'
+                : 'badge-waiting';
             var action = s.status === 'waiting'
+                ? '<button class="btn btn-warning btn-sm" onclick="callStudent(' + examId + ',' + s.student_id + ')">Call</button>'
+                : s.status === 'called'
                 ? '<button class="btn btn-success btn-sm" onclick="markAttended(' + examId + ',' + s.student_id + ')">Mark Attended</button>'
                 : '<span style="color:#aaa;font-size:12px;">done</span>';
             rows += '<tr>'
@@ -242,6 +247,17 @@ function loadQueueList() {
             + '</div>';
     }).catch(function () {
         area.innerHTML = alertBox('Failed to load queue.', 'danger');
+    });
+}
+
+function callStudent(examId, studentId) {
+    apiRequest('/api/professor/queue.php', 'PUT', { exam_id: examId, student_id: studentId })
+    .then(function (data) {
+        if (data.status === 'called') {
+            loadQueueList();
+        } else {
+            alert(data.error || data.message || 'Failed to call student.');
+        }
     });
 }
 
