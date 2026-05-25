@@ -63,8 +63,13 @@
                         <input type="text" id="queueExamId" placeholder="e.g. 5">
                     </div>
                     <button class="btn btn-primary" onclick="joinQueue()">Join Queue</button>
-                    <button class="btn btn-primary" onclick="checkQueueStatus()" style="margin-left:8px;background-color:#0b3764;">Check My Status</button>
                     <div id="queueMsg"></div>
+                </div>
+
+                <div id="queueStatusCard" class="card" style="display:none;">
+                    <h3>Live Queue Status <span id="queuePulse" style="font-size:11px;color:#888;font-weight:normal;">● updating...</span></h3>
+                    <div id="queueStatusBody"></div>
+                    <button class="btn" onclick="stopQueuePolling()" style="margin-top:12px;background:#ccc;color:#333;font-size:13px;">Leave Queue</button>
                 </div>
             </div>
 
