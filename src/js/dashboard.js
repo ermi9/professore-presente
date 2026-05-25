@@ -123,6 +123,9 @@ function joinQueue() {
         if (data.status === 'waiting') {
             msgDiv.innerHTML = '';
             startQueuePolling(examId);
+        } else if (data.error && data.error.indexOf('already in the queue') !== -1) {
+            msgDiv.innerHTML = '';
+            startQueuePolling(examId);
         } else {
             msgDiv.innerHTML = alertBox(data.error || data.message || 'Could not join the queue.', 'danger');
         }
