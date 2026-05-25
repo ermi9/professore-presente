@@ -147,14 +147,18 @@ function pollQueueStatus() {
 
         if (data.position !== undefined) {
             if (data.status === 'called') {
-                stopQueuePolling();
+                clearInterval(queuePoller);
+                queuePoller = null;
+                activeQueueExamId = null;
                 body.innerHTML = '<div style="text-align:center;padding:16px 0;">'
                     + '<p style="font-size:22px;font-weight:bold;color:#1a5276;">It\'s your turn!</p>'
                     + '<p style="color:#555;">Head to the exam room now.</p>'
                     + '</div>';
                 pulse.textContent = '';
             } else if (data.status === 'attended') {
-                stopQueuePolling();
+                clearInterval(queuePoller);
+                queuePoller = null;
+                activeQueueExamId = null;
                 body.innerHTML = alertBox('You have been marked as attended. Good luck!', 'success');
                 pulse.textContent = '';
             } else {

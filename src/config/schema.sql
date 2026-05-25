@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS queue (
     student_id INTEGER NOT NULL,
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     attended_at TIMESTAMP,
-    status VARCHAR(20) DEFAULT 'waiting' CHECK (status IN ('waiting', 'attended', 'absent')),
+    status VARCHAR(20) DEFAULT 'waiting' CHECK (status IN ('waiting', 'called', 'attended', 'absent')),
     FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
     UNIQUE(exam_id, student_id)
