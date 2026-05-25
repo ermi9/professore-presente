@@ -1,10 +1,10 @@
 // professor.js - Professor Dashboard
-// Requires: common.js (loaded before this file in the HTML)
+// Requires common.js ....loaded before this file in the HTML
 
 var token = localStorage.getItem('token');
 if (!token) window.location.href = 'index.html';
 
-// ── Navigation ────────────────────────────────────────────
+//Navigation
 
 var sections = ['courses', 'exams', 'roster', 'queue', 'profile'];
 
@@ -22,7 +22,7 @@ function loadPage(page) {
     if (page === 'profile') loadProfile();
 }
 
-// ── Init ──────────────────────────────────────────────────
+//Init
 
 function init() {
     apiRequest('/api/auth/profile.php').then(function (data) {
@@ -31,7 +31,7 @@ function init() {
     loadPage('courses');
 }
 
-// ── COURSES ───────────────────────────────────────────────
+//COURSES
 
 function loadCoursesList() {
     var list = document.getElementById('coursesList');
@@ -88,7 +88,7 @@ function createCourse() {
     });
 }
 
-// ── EXAMS ─────────────────────────────────────────────────
+// EXAMS
 
 function loadExamsList() {
     var list = document.getElementById('examsList');
@@ -159,7 +159,7 @@ function createExam() {
     });
 }
 
-// ── ROSTER ────────────────────────────────────────────────
+//ROSTER 
 
 function uploadRoster() {
     var examId    = document.getElementById('rosterExamId').value;

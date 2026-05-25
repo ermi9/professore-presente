@@ -20,6 +20,7 @@ class RBAC {
         'student' => [
             'student.enroll_course',
             'student.list_courses',
+            'student.list_exams',
             'student.join_queue',
             'student.view_queue',
             'auth.profile'

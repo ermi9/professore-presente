@@ -145,15 +145,27 @@ function createExam($conn, $professor_id) {
 
         $exam_id = $conn->lastInsertId();
 
+        // Auto-populate exam_list from all students enrolled in this course
+        $roster_stmt = $conn->prepare("
+            INSERT INTO exam_list (exam_id, student_id)
+            SELECT :exam_id, sc.student_id
+            FROM student_courses sc
+            WHERE sc.course_id = :course_id
+            ON CONFLICT (exam_id, student_id) DO NOTHING
+        ");
+        $roster_stmt->execute([':exam_id' => $exam_id, ':course_id' => $course_id]);
+        $enrolled_count = $roster_stmt->rowCount();
+
         http_response_code(201);
         echo json_encode([
-            'message' => 'Exam created successfully',
-            'exam_id' => $exam_id,
-            'course_id' => $course_id,
-            'exam_date' => $exam_date,
-            'exam_time' => $exam_time,
-            'room_id' => $room_id,
-            'status' => 'not_started'
+            'message'       => 'Exam created successfully',
+            'exam_id'       => $exam_id,
+            'course_id'     => $course_id,
+            'exam_date'     => $exam_date,
+            'exam_time'     => $exam_time,
+            'room_id'       => $room_id,
+            'status'        => 'not_started',
+            'enrolled_count' => $enrolled_count
         ]);
 
     } catch (PDOException $e) {
