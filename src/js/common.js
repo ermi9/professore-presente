@@ -1,5 +1,3 @@
-// common.js - Shared helpers loaded by all dashboards
-
 function apiRequest(url, method, body) {
     var token = localStorage.getItem('token');
     var options = {
