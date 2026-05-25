@@ -1,11 +1,33 @@
 // dashboard.js - Student Dashboard
-// Requires: common.js (loaded before this file in the HTML)
 
 var token = localStorage.getItem('token');
 if (!token) window.location.href = 'index.html';
 
-// ── Navigation ────────────────────────────────────────────
+//Helpers
 
+function apiRequest(url, method, body) {
+    var options = {
+        method: method || 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    };
+    if (body) options.body = JSON.stringify(body);
+    return fetch(url, options).then(function (res) { return res.json(); });
+}
+
+function alertBox(msg, type) {
+    return '<div class="alert alert-' + (type || 'info') + '">' + msg + '</div>';
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_type');
+    window.location.href = 'index.html';
+}
+
+//Navigation
 var sections = ['courses', 'queue', 'profile'];
 
 function showSection(name) {
@@ -21,7 +43,7 @@ function loadPage(page) {
     if (page === 'profile') loadProfile();
 }
 
-// ── Init ──────────────────────────────────────────────────
+//Init ─
 
 function init() {
     apiRequest('/api/auth/profile.php').then(function (data) {
@@ -61,15 +83,15 @@ function loadCoursesList() {
 }
 
 function enrollCourse() {
-    var courseCode = document.getElementById('enrollId').value.trim();
+    var courseId = parseInt(document.getElementById('enrollId').value);
     var msgDiv = document.getElementById('enrollMsg');
 
-    if (!courseCode) {
-        msgDiv.innerHTML = alertBox('Please enter a Course Code.', 'danger');
+    if (!courseId) {
+        msgDiv.innerHTML = alertBox('Please enter a Course ID.', 'danger');
         return;
     }
 
-    apiRequest('/api/student/courses.php', 'POST', { course_code: courseCode }).then(function (data) {
+    apiRequest('/api/student/courses.php', 'POST', { course_id: courseId }).then(function (data) {
         if (data.course_id) {
             msgDiv.innerHTML = alertBox('Enrolled successfully!', 'success');
             document.getElementById('enrollId').value = '';
@@ -82,7 +104,7 @@ function enrollCourse() {
     });
 }
 
-//QUEUE
+//QUEUE 
 
 function joinQueue() {
     var examId = parseInt(document.getElementById('queueExamId').value);
@@ -113,7 +135,7 @@ function checkQueueStatus() {
         return;
     }
 
-    apiRequest('/api/student/queue.php?exam_id=' + examId).then(function (data) {
+    apiRequest('/api/student/queue.php', 'GET', { exam_id: examId }).then(function (data) {
         if (data.position !== undefined) {
             msgDiv.innerHTML = alertBox(
                 'Status: <strong>' + data.status + '</strong> &nbsp;|&nbsp; '
@@ -140,5 +162,5 @@ function loadProfile() {
     });
 }
 
-//Start
+//Start 
 init();

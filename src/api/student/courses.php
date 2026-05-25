@@ -67,13 +67,15 @@ $uri_parts = explode('/', trim($uri, '/'));
 
 // Route
 if ($request_method === 'POST') {
-    // Enrolling in a course
     enrollInCourse($conn, $student_id);
-} 
+}
 elseif ($request_method === 'GET') {
-    // List enrolled courses
-    listEnrolledCourses($conn, $student_id);
-} 
+    if (isset($_GET['browse'])) {
+        listAllCourses($conn, $student_id);
+    } else {
+        listEnrolledCourses($conn, $student_id);
+    }
+}
 else {
     http_response_code(405);
     echo json_encode(['error' => 'Method not allowed']);
@@ -134,6 +136,37 @@ function enrollInCourse($conn, $student_id) {
     } catch (PDOException $e) {
         http_response_code(500);
         echo json_encode(['error' => 'Failed to enroll: ' . $e->getMessage()]);
+    }
+}
+
+function listAllCourses($conn, $student_id) {
+    try {
+        $stmt = $conn->prepare("
+            SELECT c.id, c.name, c.code, c.description,
+                   u.username as professor_name,
+                   CASE WHEN sc.id IS NOT NULL THEN true ELSE false END as enrolled
+            FROM courses c
+            JOIN professors p ON c.professor_id = p.id
+            JOIN users u ON p.user_id = u.id
+            LEFT JOIN student_courses sc ON sc.course_id = c.id AND sc.student_id = :student_id
+            ORDER BY c.name ASC
+        ");
+        $stmt->execute([':student_id' => $student_id]);
+        $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($courses as &$c) {
+            $c['enrolled'] = (bool)$c['enrolled'];
+        }
+
+        http_response_code(200);
+        echo json_encode([
+            'message' => 'All courses retrieved',
+            'count' => count($courses),
+            'courses' => $courses
+        ]);
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Failed to retrieve courses: ' . $e->getMessage()]);
     }
 }
 
