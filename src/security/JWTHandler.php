@@ -20,6 +20,7 @@ class JWTHandler {
             $this->secret_key,
             true
         );
+        //double encoding the signature to ensure it's URL safe
         $signature_encoded = $this->base64UrlEncode($signature);
 
         return $header_encoded . '.' . $payload_encoded . '.' . $signature_encoded;
