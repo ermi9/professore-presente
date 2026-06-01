@@ -98,15 +98,22 @@ The system is built as a decoupled RESTful architecture with strong security-by-
 
 ## 🗄️ Database Design
 
-Entities:
-- users
-- students
-- professors
-- courses
-- exams
-- queue_entries
+### Tables
 
-Includes foreign keys and cascading deletes.
+| Table | Description |
+|---|---|
+| `users` | All users (admin, professor, student) with role and credentials |
+| `professors` | Links users to professor role; stores department |
+| `students` | Links users to student role; stores student ID number |
+| `rooms` | Physical exam rooms with capacity and location |
+| `courses` | Courses created by professors |
+| `student_courses` | Enrollment join table (student ↔ course) |
+| `exams` | Exam sessions linked to a course and room; tracks status (`not_started`, `in_progress`, `closed`) |
+| `exam_list` | Students eligible to sit a specific exam |
+| `queue` | Active queue entries per exam; tracks status (`waiting`, `called`, `attended`, `absent`) |
+| `login_attempts` | IP-based brute-force rate limiting records |
+
+All tables use foreign keys with cascading deletes where appropriate.
 
 ---
 
@@ -129,7 +136,7 @@ http://localhost
 
 ## 📉 Limitations
 
-- No real-time updates
+- Polling-based queue updates (no WebSocket push)
 - Basic frontend UI
 - No modern framework
 
