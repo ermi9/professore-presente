@@ -267,5 +267,4 @@ function loadProfile() {
     });
 }
 
-// 
 init();
