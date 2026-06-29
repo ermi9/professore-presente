@@ -14,23 +14,23 @@ NC='\033[0m'   # Reset color
 
 # ── Handle stop command ──────────────────────────────────────
 if [ "$1" = "stop" ]; then
-    echo "================================================"
+
     echo "   Professore Presente — Stopping backend..."
-    echo "================================================"
+
     echo ""
     docker-compose down
     echo ""
     echo -e "${GREEN}All containers stopped.${NC}"
-    echo "================================================"
+
     exit 0
 fi
 
-echo "================================================"
+
 echo "   Professore Presente — Starting backend..."
-echo "================================================"
+
 echo ""
 
-# ── Step 1: Start the Docker containers ─────────────────────
+# Step 1: Start the Docker containers 
 echo "Starting containers..."
 docker-compose up -d
 if [ $? -ne 0 ]; then
@@ -38,7 +38,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# ── Step 2: Wait for the database to be healthy ─────────────
+#Step 2: Wait for the database to be healthy
 echo ""
 echo -n "Waiting for database to be ready"
 until docker inspect professore_presente_db --format='{{.State.Health.Status}}' 2>/dev/null | grep -q "healthy"; do
@@ -48,7 +48,7 @@ done
 echo ""
 echo -e "${GREEN}Database is ready.${NC}"
 
-# ── Step 3: Apply schema on first run ───────────────────────
+#  Step 3: Apply schema on first run
 # Check if the 'users' table already exists — if not, this is a fresh start
 TABLES_EXIST=$(docker exec professore_presente_db \
     psql -U professor -d professore_presente -tAc \
@@ -69,14 +69,14 @@ else
     echo "Schema already exists — skipping."
 fi
 
-# ── Step 4: Quick connection test ───────────────────────────
+#  Step 4: Quick connection test 
 echo ""
 echo "Testing database connection..."
 docker exec professore_presente_php php /var/www/html/test_db_connection.php
 
-# ── Step 5: Done ─────────────────────────────────────────────
+#  Step 5: Done 
 echo ""
-echo "================================================"
+
 echo -e "${GREEN}Backend is up and running!${NC}"
 echo ""
 echo -e "  Open: ${YELLOW}http://localhost:8080${NC}"
@@ -85,4 +85,4 @@ echo "  Useful commands:"
 echo "    Stop:        docker-compose down"
 echo "    View logs:   docker-compose logs -f php"
 echo "    DB shell:    docker exec -it professore_presente_db psql -U professor -d professore_presente"
-echo "================================================"
+
