@@ -126,3 +126,27 @@ VALUES
     ('B202', 40, 'Building B, Floor 2'),
     ('C301', 50, 'Building C, Floor 3')
 ON CONFLICT (room_number) DO NOTHING;
+
+-- Recurring weekly class schedule assigned to a course by a professor
+CREATE TABLE IF NOT EXISTS timetable_slots (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER NOT NULL,
+    day_of_week SMALLINT NOT NULL CHECK (day_of_week BETWEEN 1 AND 5),
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    room VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    UNIQUE(course_id, day_of_week, start_time)
+);
+
+-- Announcements posted by professors, scoped to one of their courses
+CREATE TABLE IF NOT EXISTS announcements (
+    id SERIAL PRIMARY KEY,
+    professor_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (professor_id) REFERENCES professors(id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+);
