@@ -3,79 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professore Presente - Admin</title>
+    <title>Professore Presente — Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
-<body>
+<body style="background:#f0f4f8; min-height:100vh;">
 
-    <header>
-        <div class="header-brand">
-            <img src="logo.png" alt="UniMe Logo" class="logo">
-            <h1>Professore Presente</h1>
+    <!-- Navbar -->
+    <nav class="navbar navbar-unime navbar-dark navbar-expand-lg shadow-sm">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2 pe-4" href="#">
+                <span class="d-inline-flex" style="line-height:0">
+                    <img src="logo.png" height="58" alt="UniMe">
+                </span>
+                <span class="fw-semibold fs-6 d-none d-md-inline">Professore Presente</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+                <ul class="navbar-nav gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="overview" onclick="loadPage('overview')">
+                            <i class="bi bi-bar-chart-line me-1"></i>Overview
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="professors" onclick="loadPage('professors')">
+                            <i class="bi bi-person-video3 me-1"></i>Professors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="students" onclick="loadPage('students')">
+                            <i class="bi bi-mortarboard me-1"></i>Students
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="contact" onclick="loadPage('contact')">
+                            <i class="bi bi-info-circle me-1"></i>Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="profile" onclick="loadPage('profile')">
+                            <i class="bi bi-person-circle me-1"></i>Profile
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn btn-outline-light btn-sm d-flex align-items-center gap-1 ms-auto" onclick="logout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="d-none d-md-inline">Logout</span>
+            </button>
         </div>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-    </header>
+    </nav>
 
-    <div class="main-wrapper">
+    <!-- Body -->
+    <div class="container-fluid py-4 px-4">
+        <div class="row g-4">
 
-        <aside class="sidebar">
-            <h3>Welcome, <span id="adminName">Admin</span></h3>
-            <hr>
-            <nav>
-                <a href="#" onclick="loadPage('professors')">Professors</a>
-                <a href="#" onclick="loadPage('profile')">Profile</a>
-            </nav>
-        </aside>
-
-        <main>
-
-            <!-- ── PROFESSORS SECTION ── -->
-            <div id="section-professors">
-                <h2 class="page-title">Professors</h2>
-
-                <div class="card">
-                    <h3>Create New Professor Account</h3>
-                    <div class="form-group">
-                        <label for="profUsername">Username</label>
-                        <input type="text" id="profUsername" placeholder="e.g. prof_rossi">
+            <!-- Profile Sidebar -->
+            <aside class="col-lg-3">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body text-center py-4 px-3">
+                        <div class="avatar-circle mb-3" id="avatarCircle">A</div>
+                        <h6 class="fw-bold mb-1" id="sidebarName">—</h6>
+                        <span class="badge rounded-pill px-3 py-1 mb-3 d-inline-block" style="background:#006ec0;font-size:0.72rem">Administrator</span>
+                        <hr class="my-3">
+                        <div class="text-start px-1">
+                            <div class="d-flex align-items-center gap-2 mb-2 text-muted" style="font-size:0.82rem">
+                                <i class="bi bi-envelope"></i>
+                                <span id="sidebarEmail" class="text-truncate">—</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 mb-2 text-muted" style="font-size:0.82rem">
+                                <i class="bi bi-person-video3"></i>
+                                <span><span id="sidebarProfessors">—</span> professors</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 text-muted" style="font-size:0.82rem">
+                                <i class="bi bi-mortarboard"></i>
+                                <span><span id="sidebarStudents">—</span> students</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="profEmail">Email</label>
-                        <input type="email" id="profEmail" placeholder="professor@university.it">
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="col-lg-9">
+
+                <!-- ── OVERVIEW ── -->
+                <div id="section-overview" style="display:none;">
+                    <h5 class="page-title-bar">System Overview</h5>
+                    <div class="row g-3">
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm border-0 rounded-3 h-100">
+                                <div class="card-body d-flex align-items-center gap-3 py-3">
+                                    <div class="stat-icon"><i class="bi bi-person-video3 fs-5" style="color:#006ec0"></i></div>
+                                    <div><div class="fw-bold fs-4" id="statProfessors">—</div><div class="text-muted small">Professors</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm border-0 rounded-3 h-100">
+                                <div class="card-body d-flex align-items-center gap-3 py-3">
+                                    <div class="stat-icon"><i class="bi bi-mortarboard fs-5" style="color:#006ec0"></i></div>
+                                    <div><div class="fw-bold fs-4" id="statStudents">—</div><div class="text-muted small">Students</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm border-0 rounded-3 h-100">
+                                <div class="card-body d-flex align-items-center gap-3 py-3">
+                                    <div class="stat-icon"><i class="bi bi-journal-text fs-5" style="color:#006ec0"></i></div>
+                                    <div><div class="fw-bold fs-4" id="statCourses">—</div><div class="text-muted small">Courses</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="card shadow-sm border-0 rounded-3 h-100">
+                                <div class="card-body d-flex align-items-center gap-3 py-3">
+                                    <div class="stat-icon"><i class="bi bi-clipboard-check fs-5" style="color:#006ec0"></i></div>
+                                    <div><div class="fw-bold fs-4" id="statExams">—</div><div class="text-muted small">Exams</div></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="profPassword">Password</label>
-                        <input type="password" id="profPassword" placeholder="At least 6 characters">
-                    </div>
-                    <div class="form-group">
-                        <label for="profDept">Department (optional)</label>
-                        <input type="text" id="profDept" placeholder="e.g. Computer Science">
-                    </div>
-                    <button class="btn btn-primary" onclick="createProfessor()">Create Professor</button>
-                    <div id="profMsg"></div>
                 </div>
 
-                <div class="card">
-                    <h3>All Professors</h3>
-                    <div id="professorsList"><p style="color:#666;">Loading...</p></div>
-                </div>
-            </div>
+                <!-- ── PROFESSORS ── -->
+                <div id="section-professors" style="display:none;">
+                    <h5 class="page-title-bar">Professors</h5>
 
-            <!-- ── PROFILE SECTION ── -->
-            <div id="section-profile" style="display:none;">
-                <h2 class="page-title">My Profile</h2>
-                <div class="card">
-                    <table>
-                        <tr><th style="width:120px;">Username</th><td id="profileUsername">-</td></tr>
-                        <tr><th>Email</th><td id="profileEmail">-</td></tr>
-                        <tr><th>Role</th><td id="profileRole">-</td></tr>
-                    </table>
-                </div>
-            </div>
+                    <div class="card shadow-sm border-0 rounded-3 mb-4">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Create Professor Account</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Username</label>
+                                    <input type="text" id="profUsername" class="form-control" placeholder="e.g. prof_rossi">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Email</label>
+                                    <input type="email" id="profEmail" class="form-control" placeholder="professor@unime.it">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Password</label>
+                                    <input type="password" id="profPassword" class="form-control" placeholder="At least 6 characters">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Department</label>
+                                    <input type="text" id="profDept" class="form-control" placeholder="e.g. Computer Science">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mt-3" style="background:#006ec0;border-color:#006ec0" onclick="createProfessor()">
+                                <i class="bi bi-person-plus me-1"></i>Create Professor
+                            </button>
+                            <div id="profMsg" class="mt-2"></div>
+                        </div>
+                    </div>
 
-        </main>
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">All Professors</h6>
+                            <div id="professorsList"><p class="text-muted small">Loading...</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── STUDENTS ── -->
+                <div id="section-students" style="display:none;">
+                    <h5 class="page-title-bar">Students</h5>
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body">
+                            <div id="studentsList"><p class="text-muted small">Loading...</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── CONTACT ── -->
+                <div id="section-contact" style="display:none;">
+                    <h5 class="page-title-bar">Contact &amp; Support</h5>
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body py-5">
+                            <div class="row justify-content-center text-center g-4">
+                                <div class="col-md-5">
+                                    <div class="mb-2" style="font-size:2rem;color:#006ec0"><i class="bi bi-envelope-fill"></i></div>
+                                    <h6 class="fw-bold">System Administrator</h6>
+                                    <p class="text-muted small mb-0">Contact the technical team for platform configuration or database issues.</p>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="mb-2" style="font-size:2rem;color:#006ec0"><i class="bi bi-building"></i></div>
+                                    <h6 class="fw-bold">Università degli Studi di Messina</h6>
+                                    <p class="text-muted small mb-0">Piazza Pugliatti, 1 — 98122 Messina, Italy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── PROFILE ── -->
+                <div id="section-profile" style="display:none;">
+                    <h5 class="page-title-bar">My Profile</h5>
+                    <div class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body">
+                            <table class="table table-borderless mb-0" style="font-size:0.92rem">
+                                <tr><th style="width:130px;color:#006ec0">Username</th><td id="profileUsername">—</td></tr>
+                                <tr><th style="color:#006ec0">Email</th><td id="profileEmail">—</td></tr>
+                                <tr><th style="color:#006ec0">Role</th><td id="profileRole">—</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/common.js"></script>
     <script src="js/admin.js"></script>
 </body>
