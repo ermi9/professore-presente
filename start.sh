@@ -1,18 +1,12 @@
 #!/bin/bash
 
-# ============================================================
 # start.sh — Manage the Professore Presente backend
 # Usage: ./start.sh        → start the app
 #        ./start.sh stop   → stop the app
-# ============================================================
 
-# Text colors
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-RED='\033[0;31m'
-NC='\033[0m'   # Reset color
 
-# ── Handle stop command ──────────────────────────────────────
+
+# Handle stop command
 if [ "$1" = "stop" ]; then
 
     echo "   Professore Presente — Stopping backend..."
@@ -34,7 +28,7 @@ echo ""
 echo "Starting containers..."
 docker-compose up -d
 if [ $? -ne 0 ]; then
-    echo -e "${RED}Failed to start containers. Is Docker running?${NC}"
+    echo -e "Failed to start containers. Is Docker running?"
     exit 1
 fi
 
@@ -46,7 +40,7 @@ until docker inspect professore_presente_db --format='{{.State.Health.Status}}' 
     sleep 2
 done
 echo ""
-echo -e "${GREEN}Database is ready.${NC}"
+echo -e "Database is ready."
 
 #  Step 3: Apply schema on first run
 # Check if the 'users' table already exists — if not, this is a fresh start
@@ -60,9 +54,9 @@ if [ "$TABLES_EXIST" = "0" ] || [ -z "$TABLES_EXIST" ]; then
     docker exec -i professore_presente_db \
         psql -U professor -d professore_presente < src/config/schema.sql
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Schema applied successfully.${NC}"
+        echo -e "Schema applied successfully."
     else
-        echo -e "${RED}Failed to apply schema. Check src/config/schema.sql${NC}"
+        echo -e "Failed to apply schema. Check src/config/schema.sql"
         exit 1
     fi
 else
@@ -79,7 +73,9 @@ echo ""
 
 echo -e "${GREEN}Backend is up and running!${NC}"
 echo ""
-echo -e "  Open: ${YELLOW}http://localhost:8080${NC}"
+echo -e "Backend is up and running!"
+echo ""
+echo -e "  Open: http://localhost:8080"
 echo ""
 echo "  Useful commands:"
 echo "    Stop:        docker-compose down"

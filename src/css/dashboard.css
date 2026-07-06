@@ -1,298 +1,79 @@
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-}
-
-
-header {
+/* ── Navbar ── */
+.navbar-unime {
     background-color: #006ec0;
-    color: white;
-    
-
-    display: flex;
-    justify-content: space-between;  
-    align-items: center;             
-    
-
-    padding: 15px;
-    
-
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.header-brand {
-    display: flex;                   
-    align-items: center;             
-    gap: 15px;                      
-}
-
-
-.logo {
-    height: 77px;
-    width: auto;
-    margin: 0;
-}
-
-
-h1 {
-    font-size: 24px;
-    margin: 0;                       
-}
-
-
-.logout-btn:hover {
-    background-color: #f0f0f0;
-}
-.main-wrapper{
-    display: flex;
-
-}
-.sidebar {
-    width: 240px;
-    min-width: 240px;
-    padding: 20px;
-    background-color: #fff;
-    border-right: 1px solid #e0e0e0;
-    min-height: calc(100vh - 80px);
-}
-
-.sidebar h3 {
-    color: #0b3764;
-    font-size: 15px;
-    margin-bottom: 10px;
-}
-
-.sidebar hr {
-    border: none;
-    border-top: 1px solid #e0e0e0;
-    margin-bottom: 15px;
-}
-
-/* Sidebar navigation links */
-.sidebar nav a {
-    display: block;
-    padding: 10px 14px;
-    text-decoration: none;
-    color: #333;
-    border-radius: 4px;
-    margin-bottom: 4px;
-    font-size: 14px;
-}
-
-.sidebar nav a:hover {
-    background-color: #e8f0fe;
-    color: #006EC6;
-}
-
-/* Main content area */
-main {
-    flex: 1;
-    padding: 25px;
-}
-
-/* Logout button */
-.logout-btn {
-    background: white;
-    color: #006EC6;
-    padding: 8px 18px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.logout-btn:hover {
-    background-color: #e8f0fe;
-}
-
-/* Page title */
-.page-title {
-    font-size: 22px;
-    color: #0b3764;
-    margin-bottom: 20px;
-}
-
-/* Card container */
-.card {
-    background: white;
+.navbar-unime .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
     border-radius: 6px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    padding: 6px 14px !important;
+    transition: background 0.15s;
 }
 
-.card h3 {
-    color: #0b3764;
-    font-size: 16px;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e8f0fe;
+.navbar-unime .nav-link:hover,
+.navbar-unime .nav-link.active-nav {
+    background: rgba(255, 255, 255, 0.16) !important;
+    color: #fff !important;
 }
 
-/* Forms inside dashboards */
-.form-group {
-    margin-bottom: 15px;
+/* ── Profile sidebar avatar ── */
+.avatar-circle {
+    width: 72px;
+    height: 72px;
+    background: #006ec0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 auto;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #006EC6;
-}
-
-/* Buttons */
-.btn {
-    padding: 8px 18px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.btn-primary {
-    background-color: #006ec0;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #005ba3;
-}
-
-.btn-success {
-    background-color: #28a745;
-    color: white;
-}
-
-.btn-success:hover {
-    background-color: #218838;
-}
-
-.btn-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.btn-warning:hover {
-    background-color: #e0a800;
-}
-
-.btn-sm {
-    padding: 4px 10px;
-    font-size: 12px;
-}
-
-/* Alert messages */
-.alert {
-    padding: 10px 15px;
-    border-radius: 4px;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-.alert-info {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    border: 1px solid #bee5eb;
-}
-
-.alert-warning {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffe69c;
-}
-
-/* Tables */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-table th,
-table td {
-    padding: 10px 12px;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-table th {
-    background-color: #f0f4f8;
-    color: #0b3764;
-    font-weight: bold;
-}
-
-table tr:last-child td {
-    border-bottom: none;
-}
-
-table tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* Status badges */
-.badge {
-    display: inline-block;
-    padding: 3px 8px;
+/* ── Stat cards ── */
+.stat-icon {
+    width: 48px;
+    height: 48px;
     border-radius: 10px;
-    font-size: 12px;
-    font-weight: bold;
+    background: #e8f0fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.badge-waiting {
-    background-color: #fff3cd;
-    color: #856404;
+/* ── Status badges (queue) ── */
+.badge-waiting  { background: #fff3cd; color: #856404; }
+.badge-called   { background: #cce5ff; color: #004085; }
+.badge-attended { background: #d4edda; color: #155724; }
+.badge-absent   { background: #f8d7da; color: #721c24; }
+
+/* ── Timetable grid ── */
+.tt-busy {
+    background: #fff0f0;
+    vertical-align: middle;
 }
 
-.badge-attended {
-    background-color: #d4edda;
-    color: #155724;
+.tt-free {
+    color: #adb5bd;
+    font-size: 0.8rem;
 }
 
-.badge-absent {
-    background-color: #f8d7da;
-    color: #721c24;
+/* ── Announcement bubble ── */
+.announcement-bubble {
+    background: #f0f7ff;
+    border-left: 3px solid #006ec0;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 0.92rem;
 }
 
-.badge-called {
-    background-color: #cce5ff;
-    color: #004085;
+/* ── Page title accent ── */
+.page-title-bar {
+    border-left: 4px solid #006ec0;
+    padding-left: 12px;
+    color: #006ec0;
+    font-weight: 700;
+    margin-bottom: 24px;
 }
