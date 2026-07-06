@@ -59,7 +59,7 @@ function init() {
     loadPage('dashboard');
 }
 
-// ── DASHBOARD ──────────────────────────────────────────────────────────────
+//  DASHBOARD 
 
 function loadDashboard() {
     apiRequest('/api/professor/stats.php').then(function (data) {
@@ -74,7 +74,7 @@ function loadDashboard() {
     });
 }
 
-// ── TIMETABLE RENDERING ────────────────────────────────────────────────────
+//  TIMETABLE RENDERING 
 
 function renderTimetable(slots, bodyId) {
     var lookup = {};
@@ -108,7 +108,7 @@ function renderTimetable(slots, bodyId) {
     el.innerHTML = html || '<tr><td colspan="6" class="text-muted py-3 text-center">No slots scheduled yet.</td></tr>';
 }
 
-// ── SCHEDULE CLASSES ───────────────────────────────────────────────────────
+//  SCHEDULE CLASSES 
 
 function loadSchedule() {
     apiRequest('/api/professor/timetable.php').then(function (data) {
@@ -156,7 +156,7 @@ function deleteSlot(slotId) {
     });
 }
 
-// ── COURSES ────────────────────────────────────────────────────────────────
+//  COURSES 
 
 function loadCoursesList() {
     var list = document.getElementById('coursesList');
@@ -210,7 +210,7 @@ function createCourse() {
     });
 }
 
-// ── EXAMS ──────────────────────────────────────────────────────────────────
+//  EXAMS 
 
 function loadExamsList() {
     var list = document.getElementById('examsList');
@@ -276,7 +276,7 @@ function createExam() {
     });
 }
 
-// ── ROSTER ─────────────────────────────────────────────────────────────────
+//  ROSTER 
 
 function uploadRoster() {
     var examId    = document.getElementById('rosterExamId').value;
@@ -311,7 +311,7 @@ function uploadRoster() {
     });
 }
 
-// ── QUEUE ──────────────────────────────────────────────────────────────────
+//  QUEUE 
 
 function populateExamDropdown(selectId) {
     apiRequest('/api/professor/exams.php').then(function (data) {
@@ -390,7 +390,7 @@ function markAttended(examId, studentId) {
     });
 }
 
-// ── ENROLLED STUDENTS ──────────────────────────────────────────────────────
+//  ENROLLED STUDENTS 
 
 function loadEnrolledStudents() {
     var examId = parseInt(document.getElementById('studentsExamSelect').value);
@@ -426,7 +426,7 @@ function loadEnrolledStudents() {
     });
 }
 
-// ── ANNOUNCEMENTS ──────────────────────────────────────────────────────────
+//  ANNOUNCEMENTS 
 
 function populateCourseDropdown(selectId) {
     if (coursesCache.length > 0) {
@@ -504,7 +504,7 @@ function deleteAnnouncement(id) {
     });
 }
 
-// ── PROFILE ────────────────────────────────────────────────────────────────
+//  PROFILE 
 
 function loadProfile() {
     apiRequest('/api/auth/profile.php').then(function (data) {
@@ -514,12 +514,6 @@ function loadProfile() {
             document.getElementById('profileRole').textContent     = data.user.role;
         }
     });
-}
-
-// ── UTILS ──────────────────────────────────────────────────────────────────
-
-function escapeHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 init();
