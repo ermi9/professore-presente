@@ -1,0 +1,10 @@
+# Office documents (large binaries — keep out of git)
+*.docx
+*.doc
+
+# LibreOffice / OpenOffice lock files
+.~lock.*#
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
