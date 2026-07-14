@@ -57,7 +57,7 @@ function init() {
     loadPage('timetable');
 }
 
-// ── TIMETABLE ──────────────────────────────────────────────────────────────
+//  TIMETABLE 
 
 function loadTimetable() {
     apiRequest('/api/student/timetable.php').then(function (data) {
@@ -98,7 +98,7 @@ function renderTimetable(slots, bodyId) {
     document.getElementById(bodyId).innerHTML = html || '<tr><td colspan="6" class="text-muted py-3">No classes scheduled for your courses yet.</td></tr>';
 }
 
-// ── MY EXAMS ───────────────────────────────────────────────────────────────
+//MY EXAMS
 
 function loadMyExams() {
     var container = document.getElementById('examsList');
@@ -168,7 +168,7 @@ function goToQueue(examId) {
     loadPage('queue');
 }
 
-// ── COURSES ────────────────────────────────────────────────────────────────
+//  COURSES 
 
 function loadCoursesList() {
     var list = document.getElementById('coursesList');
@@ -216,7 +216,7 @@ function enrollCourse() {
     });
 }
 
-// ── QUEUE ──────────────────────────────────────────────────────────────────
+//  QUEUE 
 
 function joinQueue() {
     var examId = parseInt(document.getElementById('queueExamId').value);
@@ -288,7 +288,7 @@ function stopQueuePolling() {
     if (body) body.innerHTML = '';
 }
 
-// ── ANNOUNCEMENTS ──────────────────────────────────────────────────────────
+//  ANNOUNCEMENTS 
 
 function loadAnnouncements() {
     var container = document.getElementById('announcementsList');
@@ -334,10 +334,6 @@ function loadProfile() {
     });
 }
 
-// ── UTILS ──────────────────────────────────────────────────────────────────
-
-function escapeHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+//  UTILS 
 
 init();

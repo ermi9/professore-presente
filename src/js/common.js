@@ -15,6 +15,10 @@ function alertBox(msg, type) {
     return '<div class="alert alert-' + (type || 'info') + '">' + msg + '</div>';
 }
 
+function escapeHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user_type');
