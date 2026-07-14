@@ -44,7 +44,7 @@ function init() {
     loadPage('overview');
 }
 
-// ── OVERVIEW ───────────────────────────────────────────────────────────────
+//  OVERVIEW 
 
 function loadOverview() {
     apiRequest('/api/admin/stats.php').then(function (data) {
@@ -57,7 +57,7 @@ function loadOverview() {
     });
 }
 
-// ── PROFESSORS ─────────────────────────────────────────────────────────────
+//  PROFESSORS 
 
 function loadProfessorsList() {
     var list = document.getElementById('professorsList');
@@ -114,7 +114,7 @@ function createProfessor() {
     });
 }
 
-// ── STUDENTS ───────────────────────────────────────────────────────────────
+//  STUDENTS 
 
 function loadStudentsList() {
     var list = document.getElementById('studentsList');
@@ -145,7 +145,7 @@ function loadStudentsList() {
     });
 }
 
-// ── PROFILE ────────────────────────────────────────────────────────────────
+//  PROFILE 
 
 function loadProfile() {
     apiRequest('/api/auth/profile.php').then(function (data) {
